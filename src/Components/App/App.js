@@ -1,53 +1,81 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-import {SearchResults} from '../SearchResults/SearchResults';
-import {Playlist} from '../Playlist/Playlist';
+import SearchResults from '../SearchResults/SearchResults'
+import PlayList from '../PlayList/PlayList'
+import SearchBar from '../SearchBar/SearchBar'
 
 class App extends React.Component {
   constructor(props){
-    super(props),
-    this.state = {
-      searchResults : [
-        {name:'name'},
-        {artist:'artist'},
-        {album:'album'},
-        {id:'id'}
-      ],
-      playlistName : 'playlistname',
-      playlistTracks : [
-        {name:''},
-        {artist:''},
-        {album:''},
-        {id:''}
-      ]
+    super(props);
+
+    this.state={
+      searchResults:[{
+        name:'ionion',
+        artist:'lonlon',
+        album:'chion',
+        id:'12456'        
+      }],
+      playlistName:'Name of the playlist',
+      playlistTracks:[{
+        name:'ionion',
+        artist:'lonlon',
+        album:'chion',
+        id:'12456'        
+      }]
     }
-    this.addTrack = this.addTrack.bind(this)
-  }
+
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlayListName = this.updatePlayListName.bind(this);
+    this.savePlayList = this.savePlayList.bind(this);
+    this.search = this.search.bind(this);
+  };
 
   addTrack(track){
-    if (this.state.searchResults.find(savedTrack => savedTrack.id === track.id)){
+    let trackos = this.state.playListTracks;
+    if (trackos.find(searchedTrack=>
+      searchedTrack.id === track.id
+    )) {
       return;
     } else {
-      this.setState({playlistTracks:playlistTracks.push(track)})
+      trackos.push(track)
+      this.setState({playListTracks:trackos})
     }
   }
 
-  render()
-  {    
+  removeTrack(track){
+    let trackos = this.state.playlistTracks;
+    trackos = trackos.filter(searchedTrack=> track.id !== trackos.id);
+    this.setState({playlistTracks:trackos})
+  }
+
+  updatePlayListName(name){
+    this.setState({playlistName:name})
+  }
+
+  savePlayList(){
+    let trackURIs = ["uri1","uri2"]
+  }
+
+  search(term){
+    console.log(term)
+  }
+
+  render(){
     return (
-    <div>
-      <h1>Ja<span class="highlight">mmm</span>ing</h1>
-      <div class="App">
-        <SearchBar />
-        <div class="App-playlist">
-          <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
-          <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} />
+      <div>
+        <h1>Ja<span className="highlight">mmm</span>ing</h1>
+        <div className="App">
+          <SearchBar onSearch={this.search} />
+          <div className="App-playlist">
+            <SearchResults onAdd={this.addTrack} searchResults={this.state.searchResults}/>
+            <PlayList onSave={this.savePlayList} onNameChange={this.updatePlayListName} onremove={this.removeTrack} name={this.state.playlistName} tracks={this.state.playlistTracks}/>
+          </div>
         </div>
       </div>
-    </div>
-  )}
+    )
+  }
 }
 
 export default App;
