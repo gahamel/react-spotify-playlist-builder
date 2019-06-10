@@ -1,14 +1,24 @@
 import React from 'react';
-import {TrackList} from '../Tracklist/Tracklist'
+import './PlayList.css'
+import TrackList from '../TrackList/TrackList'
 
-export class Playlist extends React.Component {
-    render (){
+class PlayList extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleNameChange=this.handleNameChange.bind(this);
+    }
+    handleNameChange(event){
+        this.props.onNameChange(event.target.value)
+    }
+    render () {
         return (
-        <div className="Playlist">
-            <input value={"New Playlist"}/>
-            <TrackList playlistTracks={this.props.playlistTracks}/>
-            <button className="Playlist-save">SAVE TO SPOTIFY</button>
-        </div>
-      )
+            <div className="Playlist">
+                <input onChange={this.handleNameChange} value="New Playlist"/>
+                <TrackList isRemoval='true' tracks={this.props.tracks}/>
+                <button onClick={this.props.onSave} className="Playlist-save">SAVE TO SPOTIFY</button>
+            </div>
+        )
     }
 }
+
+export default PlayList;
